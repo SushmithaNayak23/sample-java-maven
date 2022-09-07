@@ -41,11 +41,11 @@ pipeline {
             stage ("Artifactory Publish"){
                 steps{
                     script{
-                            def server = Artifactory.server 'artifactory'
+                            def server = Artifactory.server 'artifactory_instanceid'
                             def rtMaven = Artifactory.newMavenBuild()
                             //rtMaven.resolver server: server, releaseRepo: 'jenkins-devops', snapshotRepo: 'jenkins-devops-snapshot'
                             rtMaven.deployer server: server, releaseRepo: 'jenkins-devops', snapshotRepo: 'jenkins-devops-snapshot'
-                            rtMaven.tool = 'M3'
+                            rtMaven.tool = 'LocalMaven'
                             
                             def buildInfo = rtMaven.run pom: '$workspace/pom.xml', goals: 'clean install'
                             rtMaven.deployer.deployArtifacts = true
